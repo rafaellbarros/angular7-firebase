@@ -1,0 +1,2 @@
+// Instalando dependências do projeto
+npm install firebase @angular/fire material-design-lite --save
