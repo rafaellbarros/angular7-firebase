@@ -1,16 +1,24 @@
-import { BrowserModule } from '@angular/platform-browser';
-import { NgModule } from '@angular/core';
+import {BrowserModule} from '@angular/platform-browser';
+import {NgModule} from '@angular/core';
+import {AppComponent} from './app.component';
+import {AngularFireModule} from '@angular/fire';
 
-import { AppComponent } from './app.component';
+// Initialize Firebase
+const firebaseConfig = {
+  apiKey: "AIzaSyBNNCAfk5SiMuoMhrUz7VWOIIW3Jgmb4TE",
+  authDomain: "voting-son-dev.firebaseapp.com",
+  databaseURL: "https://voting-son-dev.firebaseio.com",
+  projectId: "voting-son-dev",
+  storageBucket: "voting-son-dev.appspot.com",
+  messagingSenderId: "752662353365"
+};
 
 @NgModule({
-  declarations: [
-    AppComponent
-  ],
+  declarations: [AppComponent],
   imports: [
-    BrowserModule
+    BrowserModule, AngularFireModule.initializeApp(firebaseConfig)
   ],
   providers: [],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}
