@@ -2,6 +2,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {AngularFireModule} from '@angular/fire';
+import { AngularFirestore } from '@angular/fire/firestore';
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -18,7 +19,7 @@ const firebaseConfig = {
   imports: [
     BrowserModule, AngularFireModule.initializeApp(firebaseConfig)
   ],
-  providers: [],
+  providers: [AngularFirestore],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
