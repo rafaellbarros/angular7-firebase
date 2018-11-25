@@ -6,6 +6,7 @@ import { map } from 'rxjs/operators';
 interface Course {
   key: string;
   title: string;
+  votes: number;
 }
 
 @Component({
@@ -18,25 +19,38 @@ export class AppComponent implements OnInit {
   title = 'angular7-firebase';
 
   coursesCollection: AngularFirestoreCollection<Course>;
+  courseDoc: AngularFirestoreDocument<Course>;
   courses: Observable<Course[]>;
   snapshot: any;
 
-  constructor(private afs: AngularFirestore) { }
+  total: number;
 
-  public update(key: string) {
-    console.log(key);
-  }
+  constructor(private db: AngularFirestore) { }
 
   ngOnInit() {
-    this.coursesCollection = this.afs.collection('courses');
+    this.coursesCollection = this.db.collection('courses');
     // this.courses = this.coursesCollection.valueChanges(); // observable of notes data
     this.snapshot = this.coursesCollection.snapshotChanges().pipe(
-        map(
-          changes => changes.map(c => ({ key: c.payload.doc.id, ...c.payload.doc.data() }))
-        )
+      map(
+        changes => changes.map(c => ({ key: c.payload.doc.id, ...c.payload.doc.data() }))
+      )
     );
-
     this.courses = this.snapshot;
+  }
 
+  public update(key: string): void {
+    this.courseDoc = this.db.doc(`courses/${key}`);
+
+    this.db.firestore.runTransaction(transaction =>
+      transaction.get(this.courseDoc.ref).then(doc => {
+        if (!doc.exists) {
+          throw 'Documento não existe!';
+        }
+
+        this.total = doc.data().votes || 0;
+        this.total++;
+        transaction.update(this.courseDoc.ref, { votes: this.total});
+      })
+    );
   }
 }
