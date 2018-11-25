@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { AngularFireAuth } from '@angular/fire/auth';
+import * as firebase from 'firebase/app';
+
 
 interface Course {
   key: string;
@@ -17,6 +20,7 @@ interface Course {
 export class AppComponent implements OnInit {
 
   title = 'angular7-firebase';
+  private user: Observable<firebase.User>;
 
   coursesCollection: AngularFirestoreCollection<Course>;
   courseDoc: AngularFirestoreDocument<Course>;
@@ -24,7 +28,7 @@ export class AppComponent implements OnInit {
   snapshot: any;
   total: number;
 
-  constructor(private db: AngularFirestore) { }
+  constructor(private db: AngularFirestore, private afAuth: AngularFireAuth) { }
 
   ngOnInit() {
     this.coursesCollection = this.db.collection('courses');
@@ -36,8 +40,9 @@ export class AppComponent implements OnInit {
     this.courses = this.snapshot;
   }
 
-  public login(): void {
-    console.log('login');
+  public signInWithGithub() {
+    const provider = new firebase.auth.GithubAuthProvider();
+    return this.afAuth.auth.signInWithPopup(provider);
   }
 
   public update(key: string): void {

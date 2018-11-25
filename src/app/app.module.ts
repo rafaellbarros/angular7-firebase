@@ -3,6 +3,8 @@ import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {AngularFireModule} from '@angular/fire';
 import { AngularFirestore } from '@angular/fire/firestore';
+import { AngularFireAuthModule } from '@angular/fire/auth';
+
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -17,7 +19,9 @@ const firebaseConfig = {
 @NgModule({
   declarations: [AppComponent],
   imports: [
-    BrowserModule, AngularFireModule.initializeApp(firebaseConfig)
+    BrowserModule,
+    AngularFireModule.initializeApp(firebaseConfig),
+    AngularFireAuthModule
   ],
   providers: [AngularFirestore],
   bootstrap: [AppComponent]
