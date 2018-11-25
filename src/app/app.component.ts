@@ -22,20 +22,22 @@ export class AppComponent implements OnInit {
   courseDoc: AngularFirestoreDocument<Course>;
   courses: Observable<Course[]>;
   snapshot: any;
-
   total: number;
 
   constructor(private db: AngularFirestore) { }
 
   ngOnInit() {
     this.coursesCollection = this.db.collection('courses');
-    // this.courses = this.coursesCollection.valueChanges(); // observable of notes data
     this.snapshot = this.coursesCollection.snapshotChanges().pipe(
       map(
         changes => changes.map(c => ({ key: c.payload.doc.id, ...c.payload.doc.data() }))
       )
     );
     this.courses = this.snapshot;
+  }
+
+  public login(): void {
+    console.log('login');
   }
 
   public update(key: string): void {
