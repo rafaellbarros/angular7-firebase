@@ -1,12 +1,18 @@
-<!--The content below is only a placeholder and can be replaced.-->
-<div style="text-align:center">
-  <h1>
-    Welcome to {{ title }}!
-  </h1>
-  <img width="300" alt="Angular Logo" src="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAyNTAgMjUwIj4KICAgIDxwYXRoIGZpbGw9IiNERDAwMzEiIGQ9Ik0xMjUgMzBMMzEuOSA2My4ybDE0LjIgMTIzLjFMMTI1IDIzMGw3OC45LTQzLjcgMTQuMi0xMjMuMXoiIC8+CiAgICA8cGF0aCBmaWxsPSIjQzMwMDJGIiBkPSJNMTI1IDMwdjIyLjItLjFWMjMwbDc4LjktNDMuNyAxNC4yLTEyMy4xTDEyNSAzMHoiIC8+CiAgICA8cGF0aCAgZmlsbD0iI0ZGRkZGRiIgZD0iTTEyNSA1Mi4xTDY2LjggMTgyLjZoMjEuN2wxMS43LTI5LjJoNDkuNGwxMS43IDI5LjJIMTgzTDEyNSA1Mi4xem0xNyA4My4zaC0zNGwxNy00MC45IDE3IDQwLjl6IiAvPgogIDwvc3ZnPg==">
-</div>
-
-<ul>
-  <li *ngFor="let item of items | async">{{ item.title }}</li>
-</ul>
-
+<main class="mdl-grid">
+  <div class="mdl-cell mdl-cell--4-col mdl-cell--4-offset">
+    <ul class="mdl-list">
+      <li class="mdl-list__item" *ngFor="let course of courses | async">
+        <span class="mdl-list__item-primary-content">
+          <i class="mdl-list__item-avatar mdl-typography--text-center mdl-color--red mdl-badge mdl-badge--overlap" data-badge="10">
+            {{ course.title.charAt(0)}}
+          </i>
+          {{ course.title }}
+        </span>
+        <a class="mdl-list__item-secondary-action mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored"
+          (click)="update(course.key)">
+          <i class="material-icons">keyboard_arrow_up</i>
+        </a>
+      </li>
+    </ul>
+  </div>
+</main>
