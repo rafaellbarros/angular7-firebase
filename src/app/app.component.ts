@@ -37,7 +37,9 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     this.user = this.afAuth.user;
-    this.coursesCollection = this.db.collection('courses');
+    this.coursesCollection = this.db.collection('courses', ref => {
+      return ref.orderBy('votes', 'desc');
+    });
     this.snapshot = this.coursesCollection.snapshotChanges().pipe(
       map(
         changes => changes.map(c => ({ key: c.payload.doc.id, ...c.payload.doc.data() }))
