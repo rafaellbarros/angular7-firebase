@@ -2,9 +2,13 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {AppComponent} from './app.component';
 import {AngularFireModule} from '@angular/fire';
-import { AngularFirestore } from '@angular/fire/firestore';
-import { AngularFireAuthModule } from '@angular/fire/auth';
+import {AngularFirestore} from '@angular/fire/firestore';
+import {AngularFireAuthModule} from '@angular/fire/auth';
+import { RouterModule, Routes } from '@angular/router';
 
+const appRoutes: Routes = [
+  { path: '', component: AppComponent }
+];
 
 // Initialize Firebase
 const firebaseConfig = {
@@ -20,6 +24,7 @@ const firebaseConfig = {
   declarations: [AppComponent],
   imports: [
     BrowserModule,
+    RouterModule.forRoot(appRoutes),
     AngularFireModule.initializeApp(firebaseConfig),
     AngularFireAuthModule
   ],

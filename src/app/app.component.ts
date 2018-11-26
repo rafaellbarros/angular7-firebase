@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { AngularFirestore, AngularFirestoreCollection, AngularFirestoreDocument } from '@angular/fire/firestore';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -21,16 +22,20 @@ export class AppComponent implements OnInit {
 
   title = 'angular7-firebase';
   private user: Observable<firebase.User>;
-
+  public userDetails: firebase.User = null;
   coursesCollection: AngularFirestoreCollection<Course>;
   courseDoc: AngularFirestoreDocument<Course>;
   courses: Observable<Course[]>;
   snapshot: any;
   total: number;
 
-  constructor(private db: AngularFirestore, private afAuth: AngularFireAuth) { }
+  constructor(
+    private router: Router,
+    private db: AngularFirestore,
+    private afAuth: AngularFireAuth) { }
 
   ngOnInit() {
+    this.user = this.afAuth.user;
     this.coursesCollection = this.db.collection('courses');
     this.snapshot = this.coursesCollection.snapshotChanges().pipe(
       map(
@@ -38,11 +43,26 @@ export class AppComponent implements OnInit {
       )
     );
     this.courses = this.snapshot;
+
+    this.user.subscribe(user => {
+      if (user) {
+        this.userDetails = user;
+        console.log(this.userDetails);
+      } else {
+        this.userDetails = null;
+      }
+    });
   }
 
   public signInWithGithub() {
     const provider = new firebase.auth.GithubAuthProvider();
     return this.afAuth.auth.signInWithPopup(provider);
+  }
+
+  logout() {
+    this.afAuth.auth.signOut()
+      .then((res) => this.router.navigate(['/']));
+
   }
 
   public update(key: string): void {
