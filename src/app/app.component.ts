@@ -6,10 +6,11 @@ import { map } from 'rxjs/operators';
 import { AngularFireAuth } from '@angular/fire/auth';
 import * as firebase from 'firebase/app';
 
-
 interface Course {
-  key: string;
+  key?: string;
+  color: string;
   title: string;
+  users: string[];
   votes: number;
 }
 
@@ -59,11 +60,46 @@ export class AppComponent implements OnInit {
     return this.afAuth.auth.signInWithPopup(provider);
   }
 
-  logout() {
+  public logout(): void {
     this.afAuth.auth.signOut()
       .then((res) => this.router.navigate(['/']));
-
   }
+
+  public create(e: any, value: string): void {
+    e.preventDefault();
+
+    const emails = [
+      this.userDetails.email
+    ];
+
+    const data: Course = {
+      title: value,
+      color: this.getColor(),
+      users: emails,
+      votes: 1
+    };
+
+    this.coursesCollection.add(data);
+  }
+
+  public remove(key: string): void {
+    this.coursesCollection.doc(key).delete();
+  }
+
+  private getColor() {
+    const colors = [
+     'mdl-color--red',
+     'mdl-color--blue',
+     'mdl-color--green',
+     'mdl-color--yellow',
+     'mdl-color--orange',
+     'mdl-color--lime',
+     'mdl-color--indigo',
+     'mdl-color--pink',
+     'mdl-color--purple',
+    ];
+    return colors[Math.floor(Math.random() * colors.length)];
+}
 
   public update(key: string): void {
     this.courseDoc = this.db.doc(`courses/${key}`);
@@ -80,4 +116,5 @@ export class AppComponent implements OnInit {
       })
     );
   }
+
 }

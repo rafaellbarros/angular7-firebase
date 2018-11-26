@@ -14,11 +14,20 @@
   </span>
   </div>
   <div class="mdl-cell mdl-cell--4-col mdl-cell--4-offset">
+
+    <form class="mdl-typography--text-center" (submit)="create($event, textField.value); textField.value=''">
+      <div class="mdl-textfield mdl-js-textfield">
+        <input class="mdl-textfield__input" type="text" #textField>
+        <label class="mdl-textfield__label">Qual curso você quer ver aqui...</label>
+      </div>
+    </form>
+
+
     <ul class="mdl-list">
       <li class="mdl-list__item" *ngFor="let course of courses | async">
         <span class="mdl-list__item-primary-content">
-          <i class="mdl-list__item-avatar mdl-typography--text-center mdl-color--red mdl-badge mdl-badge--overlap"
-            [attr.data-badge]="course.votes">
+          <i class="mdl-list__item-avatar mdl-typography--text-center mdl-badge mdl-badge--overlap"
+            [attr.data-badge]="course.votes" [ngClass]="course.color">
             {{ course.title.charAt(0)}}
           </i>
           {{ course.title }}
@@ -26,6 +35,10 @@
         <a class="mdl-list__item-secondary-action mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-button--colored"
           (click)="update(course.key)">
           <i class="material-icons">keyboard_arrow_up</i>
+        </a>
+        <a class="mdl-list__item-secondary-action mdl-button mdl-js-button mdl-button--fab mdl-button--mini-fab mdl-color--red"
+          (click)="remove(course.key)">
+          <i class="material-icons">cancel</i>
         </a>
       </li>
     </ul>
