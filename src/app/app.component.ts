@@ -105,14 +105,29 @@ export class AppComponent implements OnInit {
     this.courseDoc = this.db.doc(`courses/${key}`);
 
     this.db.firestore.runTransaction(transaction =>
+
       transaction.get(this.courseDoc.ref).then(doc => {
         if (!doc.exists) {
           throw 'Documento não existe!';
         }
 
+        const emails =  doc.data().users || [];
+
+        console.log(emails);
+
+        if (emails.indexOf(this.userDetails.email) >= 0) {
+          return;
+        }
+
         this.total = doc.data().votes || 0;
         this.total++;
-        transaction.update(this.courseDoc.ref, { votes: this.total});
+        emails.push(this.userDetails.email);
+        const data = {
+          votes: this.total,
+          users: emails
+        };
+
+        transaction.update(this.courseDoc.ref, data);
       })
     );
   }
